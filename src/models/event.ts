@@ -7,7 +7,7 @@ const eventSchema = new Schema<Event>(
         nombre: { type: String, required: true },
         descripcion: { type: String, required: true },
         id_artista: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-        activo: { type: Boolean, required: true },
+        activo: { type: Boolean, default: true },
         categoria: { type: String, required: true },
         id_lugar: { type: Schema.Types.ObjectId, ref: 'Place', required: true },
         imagen: { type: String, required: true },

@@ -1,11 +1,11 @@
 import { Router } from 'express';
 import { check } from 'express-validator';
-import { crearEvento } from '../controllers/event.js';
+import { actualizarEvento, crearEvento, obtenerEventos } from '../controllers/event.js';
 import { validarCampos } from '../middlewares/validarCampos.js';
 
 const router = Router();
 
-router.get('/',);
+router.get('/', obtenerEventos);
 
 router.post('/', [
     check('codigo', 'El codigo es obligatorio').not().isEmpty(),
@@ -13,7 +13,7 @@ router.post('/', [
     check('descripcion', 'La descripcion es obligatoria').not().isEmpty(),
     check('id_artista', 'El id del artista es un mongoID').isMongoId(),
     check('categoria', 'La categoria es obligatoria').not().isEmpty(),
-    check('lugar', 'El lugar es un mongoID').isMongoId(),
+    check('id_lugar', 'El id del lugar es un mongoID').isMongoId(),
     check('imagen', 'La imagen es obligatoria').not().isEmpty(),
     check('fecha', 'La fecha es obligatoria').isDate(),
     check('hora', 'La hora es obligatoria').not().isEmpty(),
@@ -21,6 +21,9 @@ router.post('/', [
     validarCampos
 ], crearEvento);
 
-router.put('/:id',);
+router.put('/:id', [
+    check('id', 'El id debe ser un MongoID').isMongoId(),
+    validarCampos
+], actualizarEvento);
 
 export default router;
