@@ -1,0 +1,39 @@
+import express, { Application } from 'express';
+import cors from 'cors';
+
+
+import routes from '../routes/index.js';
+import dbConnection from '../config/mongo.js';
+
+
+export class Server {
+    private app: Application;
+
+    constructor() {
+        this.app = express();
+        this.connectDatabase();
+        this.middlewares();
+        this.routes();
+    }
+
+    connectDatabase() {
+        dbConnection().then(() => {
+            console.log('Connected to MongoDB');
+        })
+    }
+
+    middlewares() {
+        this.app.use(express.json());
+        this.app.use(cors());
+    }
+
+    routes() {
+        this.app.use('/api', routes);
+    }
+
+    listen(port: string) {
+        this.app.listen(port, () => {
+            console.log(`Server on port: ${port}`);
+        })
+    }
+}
