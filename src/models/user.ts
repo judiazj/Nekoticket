@@ -9,7 +9,8 @@ const userSchema = new Schema<User>(
         },
         correo: {
             type: String,
-            required: true
+            required: true,
+            unique: true
         },
         password: {
             type: String,
