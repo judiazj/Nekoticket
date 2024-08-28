@@ -1,7 +1,7 @@
 import e, { Request, Response } from 'express';
 
 import { handleHttp } from '../utils/error.handle.js';
-import { createEvent, getEvents, updateEvent } from '../services/event.js';
+import { createEvent, getEventById, getEvents, updateEvent } from '../services/event.js';
 
 export const crearEvento = async (req: Request, res: Response) => {
     const { id, activo, ...data } = req.body;
@@ -48,5 +48,25 @@ export const actualizarEvento = async (req: Request, res: Response) => {
         });
     } catch (err) {
         handleHttp(res, 'Error al actualizar evento', err);
+    }
+}
+
+export const obtenerEventoPorId = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    try {
+        const evento = await getEventById(id);
+        if (!evento) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'Evento no encontrado'
+            });
+        }
+        res.json({
+            ok: true,
+            msg: 'Evento obtenido',
+            evento
+        });
+    } catch (err) {
+        handleHttp(res, 'Error al obtener evento', err);
     }
 }

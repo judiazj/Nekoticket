@@ -1,11 +1,16 @@
 import { Router } from 'express';
 import { check } from 'express-validator';
-import { actualizarEvento, crearEvento, obtenerEventos } from '../controllers/event.js';
+import { actualizarEvento, crearEvento, obtenerEventoPorId, obtenerEventos } from '../controllers/event.js';
 import { validarCampos } from '../middlewares/validarCampos.js';
 
 const router = Router();
 
 router.get('/', obtenerEventos);
+
+router.get('/:id', [
+    check('id', 'El id debe ser un MongoID').isMongoId(),
+    validarCampos
+], obtenerEventoPorId);
 
 router.post('/', [
     check('codigo', 'El codigo es obligatorio').not().isEmpty(),

@@ -16,3 +16,8 @@ export const updateEvent = async (id: string, data: Event): Promise<Event | stri
     if (!event) return 'Evento no encontrado';
     return event;
 }
+
+export const getEventById = async (id: string): Promise<Event | null> => {
+    const event = await EventModel.findById(id).populate('id_artista').populate('id_lugar');
+    return event;
+}
