@@ -7,7 +7,7 @@ export const createEvent = async (eventData: Event): Promise<Event> => {
 }
 
 export const getEvents = async (): Promise<Event[]> => {
-    const events = await EventModel.find({ activo: true }).populate('id_artista').populate('id_lugar');
+    const events = await EventModel.find().populate('id_artista').populate('id_lugar');
     return events;
 }
 
