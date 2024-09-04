@@ -16,8 +16,8 @@ export const loginUser = async (correo: string, password: string) => {
     if (!isVerified) return 'Password incorrect';
 
     const token = generateToken(user.correo);
-    const { nombre } = user;
-    const privateUser = { nombre, correo }
+    const { nombre, rol } = user;
+    const privateUser = { nombre, correo, rol }
     const data = { token, privateUser }
     return data;
 }
