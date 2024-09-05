@@ -4,8 +4,9 @@ import { handleHttp } from '../utils/error.handle.js';
 import { createEvent, getEventById, getEvents, updateEvent } from '../services/event.js';
 import { RequestExtend } from '../interfaces/requestExtend';
 
-export const crearEvento = async (req: Request, res: Response) => {
-    const { id, activo, ...data } = req.body;
+export const crearEvento = async (req: RequestExtend, res: Response) => {
+    const { id, activo, id_artista, ...data } = req.body;
+    data.id_artista = req.user._id;
     try {
         const evento = await createEvent(data);
         res.json({

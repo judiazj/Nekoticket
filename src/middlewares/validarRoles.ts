@@ -20,3 +20,23 @@ export const esAdminRole = (req: RequestExtend, res: Response, next: NextFunctio
 
     next();
 }
+
+export const esArtistaRole = (req: RequestExtend, res: Response, next: NextFunction) => {
+    if (!req.user) {
+        return res.status(500).json({
+            ok: false,
+            msg: 'Se quiere verificar el role sin validar el token primero'
+        })
+    }
+
+    const { rol, nombre } = req.user;
+
+    if (rol !== 'ARTISTA') {
+        return res.status(401).json({
+            ok: false,
+            msg: `${nombre} no es artista - No puede hacer esto`
+        })
+    }
+
+    next();
+}

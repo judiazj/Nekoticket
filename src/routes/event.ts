@@ -5,7 +5,7 @@ import {
     validarCampos,
     validarJWT,
     existeLugarPorId,
-    esAdminRole,
+    esArtistaRole,
     optionalJWT
 } from '../middlewares/index.js';
 const router = Router();
@@ -22,11 +22,10 @@ router.get('/:id', [
 
 router.post('/', [
     validarJWT,
-    esAdminRole,
+    esArtistaRole,
     check('codigo', 'El codigo es obligatorio').not().isEmpty(),
     check('nombre', 'El nombre es obligatorio').not().isEmpty(),
     check('descripcion', 'La descripcion es obligatoria').not().isEmpty(),
-    check('id_artista', 'El id del artista es un mongoID').isMongoId(),
     check('categoria', 'La categoria es obligatoria').not().isEmpty(),
     check('id_lugar', 'El id del lugar es un mongoID').isMongoId(),
     existeLugarPorId,
