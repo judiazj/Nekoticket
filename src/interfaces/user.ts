@@ -10,4 +10,4 @@ export interface User {
     nit?: string;
 }
 
-type rolUser = 'artista' | 'cliente' | 'admin';
+type rolUser = 'ARTISTA' | 'CLIENTE' | 'ADMIN';
