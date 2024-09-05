@@ -22,8 +22,8 @@ const userSchema = new Schema<User>(
         },
         rol: {
             type: String,
-            enum: ['artista', 'cliente', 'admin'],
-            default: 'cliente'
+            enum: ['ARTISTA', 'CLIENTE', 'ADMIN'],
+            default: 'CLIENTE'
         },
         nit: {
             type: String

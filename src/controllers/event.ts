@@ -2,6 +2,7 @@ import e, { Request, Response } from 'express';
 
 import { handleHttp } from '../utils/error.handle.js';
 import { createEvent, getEventById, getEvents, updateEvent } from '../services/event.js';
+import { RequestExtend } from '../interfaces/requestExtend';
 
 export const crearEvento = async (req: Request, res: Response) => {
     const { id, activo, ...data } = req.body;
@@ -17,9 +18,10 @@ export const crearEvento = async (req: Request, res: Response) => {
     }
 }
 
-export const obtenerEventos = async (req: Request, res: Response) => {
+export const obtenerEventos = async (req: RequestExtend, res: Response) => {
+    const { user } = req;
     try {
-        const eventos = await getEvents();
+        const eventos = await getEvents(user);
         res.json({
             ok: true,
             msg: 'Eventos obtenidos',

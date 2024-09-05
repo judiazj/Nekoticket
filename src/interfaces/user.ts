@@ -1,7 +1,7 @@
 import { ObjectId } from 'mongoose';
 
 export interface User {
-    id: ObjectId;
+    _id: ObjectId;
     nombre: string;
     correo: string;
     password: string;
