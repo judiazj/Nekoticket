@@ -5,6 +5,7 @@ import { verifyToken } from '../utils/token.handle.js';
 import UserModel from '../models/user.js';
 import { RequestExtend } from '../interfaces/requestExtend';
 import { User } from '../interfaces/user.js';
+import { error } from 'console';
 
 
 
@@ -52,7 +53,8 @@ export const optionalJWT = async (req: RequestExtend, res: Response, next: NextF
     } catch (e) {
         return res.status(500).json({
             ok: false,
-            msg: 'Error al validar token'
+            msg: 'Error al validar token',
+            error: e
         })
     }
 }
