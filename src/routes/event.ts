@@ -21,8 +21,8 @@ router.get('/:id', [
 ], obtenerEventoPorId);
 
 router.post('/', [
-    validarJWT,
-    esArtistaRole,
+    // validarJWT,
+    // esArtistaRole,
     check('codigo', 'El codigo es obligatorio').not().isEmpty(),
     check('nombre', 'El nombre es obligatorio').not().isEmpty(),
     check('descripcion', 'La descripcion es obligatoria').not().isEmpty(),
