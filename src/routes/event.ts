@@ -29,7 +29,6 @@ router.post('/', [
     check('categoria', 'La categoria es obligatoria').not().isEmpty(),
     check('id_lugar', 'El id del lugar es un mongoID').isMongoId(),
     existeLugarPorId,
-    check('imagen', 'La imagen es obligatoria').not().isEmpty(),
     check('fecha', 'La fecha es obligatoria').isDate(),
     check('hora', 'La hora es obligatoria').not().isEmpty(),
     check('hora_apertura', 'La hora de apertura es obligatoria').not().isEmpty(),

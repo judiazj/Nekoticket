@@ -5,7 +5,6 @@ import { verifyToken } from '../utils/token.handle.js';
 import UserModel from '../models/user.js';
 import { RequestExtend } from '../interfaces/requestExtend';
 import { User } from '../interfaces/user.js';
-import { error } from 'console';
 
 
 

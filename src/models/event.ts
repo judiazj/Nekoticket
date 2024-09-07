@@ -10,7 +10,7 @@ const eventSchema = new Schema<Event>(
         activo: { type: Boolean, default: true },
         categoria: { type: String, required: true },
         id_lugar: { type: Schema.Types.ObjectId, ref: 'Place', required: true },
-        imagen: { type: String, required: true },
+        imagen: { type: String, required: false },
         fecha: { type: Date, required: true },
         hora: { type: String, required: true },
         hora_apertura: { type: String, required: true }
