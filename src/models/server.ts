@@ -25,7 +25,11 @@ export class Server {
 
     middlewares() {
         this.app.use(express.json());
-        this.app.use(cors());
+        this.app.use(cors({
+            credentials: true,
+            allowedHeaders: ['x-token', 'Content-Type', 'Authorization'],
+        }));
+        this.app.options('*', cors());
         this.app.use(fileUpload({
             useTempFiles: true,
             tempFileDir: '/tmp/',
