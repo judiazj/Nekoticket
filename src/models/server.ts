@@ -26,13 +26,13 @@ export class Server {
     middlewares() {
         this.app.use(express.json());
         this.app.use(cors({
-            origin: 'https://miguelvarval.com',
+            origin: '*',
             methods: ['GET', 'POST', 'PUT', 'DELETE'],
             credentials: true,
             allowedHeaders: ['x-token', 'Content-Type', 'Authorization'],
         }));
         this.app.options('*', cors({
-            origin: 'https://miguelvarval.com',
+            origin: '*',
             methods: ['GET', 'POST', 'PUT', 'DELETE'],
             allowedHeaders: ['Content-Type', 'x-token', 'Authorization'],
             credentials: true,
