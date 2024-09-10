@@ -17,6 +17,7 @@ export class Server {
         this.routes();
     }
 
+
     connectDatabase() {
         dbConnection().then(() => {
             console.log('Connected to MongoDB');
