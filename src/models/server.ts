@@ -26,16 +26,16 @@ export class Server {
     middlewares() {
         this.app.use(express.json());
         this.app.use(cors({
-            origin: '*',
-            methods: ['GET', 'POST', 'PUT', 'DELETE'],
-            credentials: true,
+            // origin: '*',
+            // methods: ['GET', 'POST', 'PUT', 'DELETE'],
+            // credentials: true,
             allowedHeaders: ['x-token', 'Content-Type', 'Authorization'],
         }));
         this.app.options('*', cors({
-            origin: '*',
-            methods: ['GET', 'POST', 'PUT', 'DELETE'],
+            // origin: '*',
+            // methods: ['GET', 'POST', 'PUT', 'DELETE'],
             allowedHeaders: ['Content-Type', 'x-token', 'Authorization'],
-            credentials: true,
+            // credentials: true,
         }));
         this.app.use(fileUpload({
             useTempFiles: true,
