@@ -23,27 +23,38 @@ export const createTickets = async (req: Request, res: Response) => {
 
 export const asignTickets = async (req: Request, res: Response) => {
     const { id } = req.params;
-    const { id_usuario } = req.body;
+    const { id_usuario, localidad, cantidad } = req.body;
+
+    if (cantidad < 1 || cantidad > 4) {
+        return res.status(400).json({ msg: 'La cantidad de boletas debe ser entre 1 y 4' });
+    }
     try {
-        const ticket = await asignTicketByUser(id, id_usuario);
+        const tickets = await asignTicketByUser(id, localidad, cantidad, id_usuario);
+        if (tickets === 'No hay suficientes boletas disponibles') {
+            return res.status(400).json({ msg: 'No hay suficientes boletas disponibles' });
+        }
+
         res.json({
             ok: true,
-            msg: 'Ticket asignado correctamente',
-            ticket
+            msg: 'Compra exitosa',
+            tickets
         });
     } catch (error) {
         handleHttp(res, 'Error al asignar los tickets', error);
     }
 }
 
-export const getTicketsPaginated = async (req: Request, res: Response) => {
-    const { limit = 5 } = req.query;
+export const getTicketsByLocalidad = async (req: Request, res: Response) => {
     const { idEvento } = req.params;
     try {
-        const tickets = await getTicketsPaginatedService(idEvento, Number(limit));
-        res.json({
+        const tickets = await getTicketsPaginatedService(idEvento);
+        if (tickets.length === 0) {
+            return res.status(404).json({ msg: 'No se encontraron boletas disponibles para este evento.' });
+        }
+
+        res.status(200).json({
             ok: true,
-            msg: 'Tickets obtenidos correctamente',
+            msg: 'Boletas disponibles para el evento',
             tickets
         });
     } catch (error) {

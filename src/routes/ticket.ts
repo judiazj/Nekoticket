@@ -2,10 +2,9 @@ import { Router } from 'express';
 import { check } from 'express-validator';
 
 import { validarCampos } from '../middlewares/index.js';
-import { asignTickets, createTickets, getTicketsPaginated } from '../controllers/ticket.js';
+import { asignTickets, createTickets, getTicketsByLocalidad } from '../controllers/ticket.js';
 import { getEventById } from '../services/event.js';
 import { getUserById } from '../services/user.js';
-import { getTicketById } from '../services/ticket.js';
 
 const router = Router();
 
@@ -19,7 +18,7 @@ router.get('/:idEvento', [
         }
     }),
     validarCampos,
-], getTicketsPaginated);
+], getTicketsByLocalidad);
 
 // TODO: Implementar la autenticacion
 router.post('/create', [
@@ -37,11 +36,11 @@ router.post('/create', [
 ], createTickets);
 
 router.put('/obtain/:id', [
-    check('id', 'El id del ticket es un MongoID').isMongoId(),
+    check('id', 'El id del evento es un MongoID').isMongoId(),
     check('id').custom(async (id) => {
-        const ticket = await getTicketById(id);
-        if (!ticket) {
-            throw new Error('El ticket no existe');
+        const event = await getEventById(id);
+        if (!event) {
+            throw new Error('El evento no existe');
         }
     }),
     check('id_usuario', 'El id del usuario es un MongoID').isMongoId(),
@@ -51,6 +50,9 @@ router.put('/obtain/:id', [
             throw new Error('El usuario no existe');
         }
     }),
+    check('localidad', 'La localidad es obligatoria').not().isEmpty(),
+    // TODO: Implementar middleware verificar localidades
+    check('cantidad', 'La cantidad es obligatoria').isNumeric({ no_symbols: true }),
     validarCampos,
 ], asignTickets);
 
