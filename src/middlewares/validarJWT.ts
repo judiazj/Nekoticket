@@ -9,14 +9,16 @@ import { User } from '../interfaces/user.js';
 
 
 export const validarJWT = async (req: RequestExtend, res: Response, next: NextFunction) => {
-    const token = req.header('x-token');
+    const authHeader = req.header('Authorization');
 
-    if (!token) {
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
         return res.status(401).json({
             ok: false,
             msg: 'No hay token en la peticion'
         })
     }
+
+    const token = authHeader.split(' ')[1];
 
     try {
         const { id }: { id: string } = verifyToken(token) as { id: string };
@@ -30,17 +32,20 @@ export const validarJWT = async (req: RequestExtend, res: Response, next: NextFu
     } catch (e) {
         res.status(401).json({
             ok: false,
-            msg: 'Token no valido'
+            msg: 'Token no valido',
+            error: e
         })
     }
 }
 
 export const optionalJWT = async (req: RequestExtend, res: Response, next: NextFunction) => {
-    const token = req.header('x-token');
+    const authHeader = req.header('Authorization');
 
-    if (!token) {
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
         return next();
     }
+
+    const token = authHeader.split(' ')[1];
 
     try {
         const { id }: { id: string } = verifyToken(token) as { id: string };

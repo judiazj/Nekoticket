@@ -21,3 +21,8 @@ export const loginUser = async (correo: string, password: string) => {
     const data = { token, privateUser }
     return data;
 }
+
+export const getUserById = async (id: string) => {
+    const user = await UserModel.findById(id);
+    return user;
+}
