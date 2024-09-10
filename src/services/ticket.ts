@@ -19,5 +19,15 @@ export const getTicketById = async (id: string) => {
 }
 
 export const asignTicketByUser = async (id: string, userId: string) => {
-    return TicketModel.findOneAndUpdate({ _id: id }, { id_usuario: userId, estado: 'vendido' }, { new: true });
+    return TicketModel.findOneAndUpdate(
+        { _id: id, activo: true },
+        { id_usuario: userId, estado: 'vendido' },
+        { new: true }
+    );
+}
+
+export const getTicketsPaginatedService = async (idEvento: string, limit: number = 5) => {
+    return TicketModel.find({ activo: true, estado: 'disponible', id_evento: idEvento })
+        .limit(limit)
+        .populate('id_evento');
 }

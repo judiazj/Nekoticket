@@ -1,7 +1,11 @@
 import { Request, Response } from 'express';
 
 import { handleHttp } from '../utils/error.handle.js';
-import { asignTicketByUser, createTicketsService } from '../services/ticket.js';
+import {
+    asignTicketByUser,
+    createTicketsService,
+    getTicketsPaginatedService
+} from '../services/ticket.js';
 
 
 export const createTickets = async (req: Request, res: Response) => {
@@ -29,5 +33,20 @@ export const asignTickets = async (req: Request, res: Response) => {
         });
     } catch (error) {
         handleHttp(res, 'Error al asignar los tickets', error);
+    }
+}
+
+export const getTicketsPaginated = async (req: Request, res: Response) => {
+    const { limit = 5 } = req.query;
+    const { idEvento } = req.params;
+    try {
+        const tickets = await getTicketsPaginatedService(idEvento, Number(limit));
+        res.json({
+            ok: true,
+            msg: 'Tickets obtenidos correctamente',
+            tickets
+        });
+    } catch (error) {
+        handleHttp(res, 'Error al obtener los tickets', error);
     }
 }
