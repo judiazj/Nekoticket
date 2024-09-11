@@ -3,10 +3,12 @@ import e, { Request, Response } from 'express';
 import { handleHttp } from '../utils/error.handle.js';
 import { createEvent, getEventById, getEvents, updateEvent } from '../services/event.js';
 import { RequestExtend } from '../interfaces/requestExtend';
+import { getUserById } from '../services/user.js';
+import { User } from '../interfaces/user.js';
 
 export const crearEvento = async (req: RequestExtend, res: Response) => {
-    const { id, activo, id_artista, ...data } = req.body;
-    data.id_artista = req.user._id;
+    const { id, activo, ...data } = req.body;
+    // data.id_artista = req.user._id;
     try {
         const evento = await createEvent(data);
         res.json({
@@ -20,8 +22,9 @@ export const crearEvento = async (req: RequestExtend, res: Response) => {
 }
 
 export const obtenerEventos = async (req: RequestExtend, res: Response) => {
-    const { user } = req;
+    const { id_usuario } = req.body;
     try {
+        const user: User = await getUserById(id_usuario) as User;
         const eventos = await getEvents(user);
         res.json({
             ok: true,

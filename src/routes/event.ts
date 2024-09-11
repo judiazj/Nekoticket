@@ -3,15 +3,17 @@ import { check } from 'express-validator';
 import { actualizarEvento, crearEvento, obtenerEventoPorId, obtenerEventos } from '../controllers/event.js';
 import {
     validarCampos,
-    validarJWT,
+    // validarJWT,
     existeLugarPorId,
-    esArtistaRole,
-    optionalJWT
+    // esArtistaRole,
+    // optionalJWT
 } from '../middlewares/index.js';
+import { getUserById } from '../services/user.js';
 const router = Router();
 
 router.get('/', [
-    optionalJWT,
+    // optionalJWT,
+    check('id_usuario', 'El id del usuario debe ser un MongoID').optional().isMongoId(),
     validarCampos
 ], obtenerEventos);
 
@@ -21,8 +23,15 @@ router.get('/:id', [
 ], obtenerEventoPorId);
 
 router.post('/', [
-    validarJWT,
-    esArtistaRole,
+    // validarJWT,
+    // esArtistaRole,
+    check('id_artista', 'El id del artista es un mongoID').isMongoId(),
+    check('id_artista').custom(async (id) => {
+        const user = await getUserById(id);
+        if (!user || (user.rol as string) !== 'ARTISTA') {
+            throw new Error('El id del artista no existe');
+        }
+    }),
     check('codigo', 'El codigo es obligatorio').not().isEmpty(),
     check('nombre', 'El nombre es obligatorio').not().isEmpty(),
     check('descripcion', 'La descripcion es obligatoria').not().isEmpty(),
