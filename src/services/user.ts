@@ -18,8 +18,8 @@ export const loginUser = async (correo: string, password: string) => {
     const token = generateToken(user.correo);
     const { nombre, rol, _id } = user;
     const privateUser = { nombre, correo, rol, _id }
-    const data = { token, privateUser }
-    return data;
+    // const data = { token, privateUser }
+    return privateUser;
 }
 
 export const getUserById = async (id: string) => {
