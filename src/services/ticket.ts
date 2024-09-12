@@ -1,13 +1,21 @@
 import { Types } from 'mongoose';
 import TicketModel from '../models/ticket.js';
 
-export const createTicketsService = async (eventId: string, localidad: string, precio: number, cantidad: number) => {
+export const createTicketsService = async (eventId: string,
+    localidad: string,
+    precio: number,
+    cantidad: number,
+    nombre: string,
+    descripcion: string,
+) => {
     const tickets = [];
     for (let i = 0; i < cantidad; i++) {
         tickets.push({
             id_evento: eventId,
             localidad,
             precio,
+            nombre,
+            descripcion
         });
     }
 

@@ -9,10 +9,10 @@ import {
 
 
 export const createTickets = async (req: Request, res: Response) => {
-    const { id_evento, localidad, precio, cantidad } = req.body;
+    const { id_evento, nombre, descripcion, localidad, precio, cantidad } = req.body;
 
     try {
-        const msg = await createTicketsService(id_evento, localidad, precio, cantidad);
+        const msg = await createTicketsService(id_evento, localidad, precio, cantidad, nombre, descripcion);
         res.status(201).json({
             msg
         });

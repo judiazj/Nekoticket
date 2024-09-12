@@ -6,6 +6,14 @@ const ticketSchema = new Schema<Ticket>({
         type: Types.ObjectId,
         required: [true, 'El id del evento es obligatorio']
     },
+    nombre: {
+        type: String,
+        required: [true, 'El nombre es obligatorio']
+    },
+    descripcion: {
+        type: String,
+        required: [true, 'La descripcion es obligatoria']
+    },
     localidad: {
         type: String,
         required: [true, 'La localidad es obligatoria']

@@ -29,6 +29,8 @@ router.post('/create', [
             throw new Error('El evento no existe');
         }
     }),
+    check('nombre', 'El nombre es obligatorio').not().isEmpty(),
+    check('descripcion', 'La descripcion es obligatoria').not().isEmpty(),
     check('localidad', 'La localidad es obligatoria').not().isEmpty(),
     check('precio', 'El precio es obligatorio').isNumeric({ no_symbols: true }),
     check('cantidad', 'La cantidad es obligatoria').isNumeric({ no_symbols: true }),
