@@ -1,6 +1,5 @@
 import { Types } from 'mongoose';
 import TicketModel from '../models/ticket.js';
-import { dir } from 'console';
 
 export const createTicketsService = async (eventId: string,
     localidad: string,
