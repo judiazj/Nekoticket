@@ -1,7 +1,7 @@
 import { ObjectId } from "mongoose";
 
 export interface Event {
-    id: ObjectId;
+    _id: ObjectId;
     codigo: number;
     nombre: string;
     descripcion: string;

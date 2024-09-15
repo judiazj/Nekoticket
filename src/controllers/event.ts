@@ -1,7 +1,7 @@
 import e, { Request, Response } from 'express';
 
 import { handleHttp } from '../utils/error.handle.js';
-import { createEvent, getEventById, getEvents, updateEvent } from '../services/event.js';
+import { createEvent, getEventById, getEvents, getTicketsSoldByEvent, updateEvent } from '../services/event.js';
 import { RequestExtend } from '../interfaces/requestExtend';
 import { getUserById } from '../services/user.js';
 import { User } from '../interfaces/user.js';
@@ -25,7 +25,22 @@ export const obtenerEventos = async (req: RequestExtend, res: Response) => {
     const { id_usuario } = req.body;
     try {
         const user: User = await getUserById(id_usuario) as User;
-        const eventos = await getEvents(user);
+        let eventos = await getEvents(user);
+        let boletasVendidasEventos = await Promise.all(eventos.map(async (evento) => {
+            let boletasVendidas: number | any[] = await getTicketsSoldByEvent(evento._id as unknown as string);
+            if (Array.isArray(boletasVendidas) && boletasVendidas.length === 0) {
+                boletasVendidas = 0;
+            } else {
+                boletasVendidas = boletasVendidas[0].total_tickets;
+            }
+            return boletasVendidas;
+        }));
+        eventos = eventos.map((evento) => {
+            return {
+                ...evento,
+                boletas_vendidas: boletasVendidasEventos.shift()
+            }
+        });
         res.json({
             ok: true,
             msg: 'Eventos obtenidos',
@@ -67,10 +82,17 @@ export const obtenerEventoPorId = async (req: Request, res: Response) => {
                 msg: 'Evento no encontrado'
             });
         }
+        let boletasVendidas: number | any[] = await getTicketsSoldByEvent(id);
+        if (Array.isArray(boletasVendidas) && boletasVendidas.length === 0) {
+            boletasVendidas = 0;
+        } else {
+            boletasVendidas = boletasVendidas[0].total_tickets;
+        }
         res.json({
             ok: true,
             msg: 'Evento obtenido',
-            evento
+            evento,
+            boletasVendidas
         });
     } catch (err) {
         handleHttp(res, 'Error al obtener evento', err);
