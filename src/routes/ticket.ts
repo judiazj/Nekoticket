@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { check } from 'express-validator';
 
 import { validarCampos } from '../middlewares/index.js';
-import { asignTickets, createTickets, getTicketsByLocalidad } from '../controllers/ticket.js';
+import { asignTickets, createTickets, getTicketsByLocalidad, getTicketsByUser } from '../controllers/ticket.js';
 import { getEventById } from '../services/event.js';
 import { getUserById } from '../services/user.js';
 
@@ -19,6 +19,17 @@ router.get('/:idEvento', [
     }),
     validarCampos,
 ], getTicketsByLocalidad);
+
+router.get('/user/:idUsuario', [
+    check('idUsuario', 'El id del usuario es un MongoID').isMongoId(),
+    check('idUsuario').custom(async (id) => {
+        const user = await getUserById(id);
+        if (!user) {
+            throw new Error('El usuario no existe');
+        }
+    }),
+    validarCampos,
+], getTicketsByUser);
 
 // TODO: Implementar la autenticacion
 router.post('/create', [

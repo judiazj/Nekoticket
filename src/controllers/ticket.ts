@@ -4,7 +4,8 @@ import { handleHttp } from '../utils/error.handle.js';
 import {
     asignTicketByUser,
     createTicketsService,
-    getTicketsPaginatedService
+    getTicketsPaginatedService,
+    getTicketsUser
 } from '../services/ticket.js';
 
 
@@ -55,6 +56,24 @@ export const getTicketsByLocalidad = async (req: Request, res: Response) => {
         res.status(200).json({
             ok: true,
             msg: 'Boletas disponibles para el evento',
+            tickets
+        });
+    } catch (error) {
+        handleHttp(res, 'Error al obtener los tickets', error);
+    }
+}
+
+export const getTicketsByUser = async (req: Request, res: Response) => {
+    const { idUsuario } = req.params;
+    try {
+        const tickets = await getTicketsUser(idUsuario);
+        if (tickets.length === 0) {
+            return res.status(404).json({ msg: 'No se encontraron boletas disponibles para este usuario.' });
+        }
+
+        res.status(200).json({
+            ok: true,
+            msg: 'Boletas disponibles para el usuario',
             tickets
         });
     } catch (error) {

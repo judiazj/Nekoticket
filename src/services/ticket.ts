@@ -1,5 +1,6 @@
 import { Types } from 'mongoose';
 import TicketModel from '../models/ticket.js';
+import { dir } from 'console';
 
 export const createTicketsService = async (eventId: string,
     localidad: string,
@@ -92,11 +93,70 @@ export const getTicketsPaginatedService = async (idEvento: string) => {
                     _id: 1,
                     localidad: 1,
                     precio: 1,
-                    id_evento: 1
+                    id_evento: 1,
+                    nombre: 1,
+                    descripcion: 1
                 }
             }
         }
     ]);
     return ticketsByLocation;
 
+}
+
+export const getTicketsUser = async (idUser: string) => {
+    const ticketsUser = await TicketModel.aggregate([
+        {
+            $match: {
+                id_usuario: new Types.ObjectId(idUser), // Filtrar por el ID del usuario
+                estado: 'vendido', // Filtrar por boletas vendidas
+                activo: true // Filtrar por boletas activas
+            }
+        },
+        {
+            $lookup: {
+                from: 'events', // Colección a unir
+                localField: 'id_evento', // Campo local de la colección actual
+                foreignField: '_id', // Campo de la colección a unir
+                as: 'evento' // Nombre del campo con la información del evento
+            }
+        },
+        {
+            $unwind: '$evento' // Deshacer el array de eventos
+        },
+        {
+            $lookup: {
+                from: 'places', // Colección a unir
+                localField: 'evento.id_lugar', // Campo local de la colección actual
+                foreignField: '_id', // Campo de la colección a unir
+                as: 'lugar' // Nombre del campo con la información del lugar
+            }
+        },
+        {
+            $unwind: '$lugar' // Deshacer el array de lugares
+        },
+        {
+            $project: {
+                _id: 0,
+                localidad: 1,
+                precio: 1,
+                nombre: 1,
+                descripcion: 1,
+                evento: {  // Mantener solo los campos necesarios para el evento
+                    nombre: 1,
+                    imagen: 1,
+                    fecha: 1,
+                    hora: 1,
+                    id_lugar: 1
+                },
+                lugar: {  // Mantener solo los campos necesarios para el lugar
+                    nombre: 1,
+                    ciudad: 1,
+                    departamento: 1,
+                    direccion: 1
+                }
+            }
+        }
+    ]);
+    return ticketsUser;
 }
