@@ -159,3 +159,13 @@ export const getTicketsUser = async (idUser: string) => {
     ]);
     return ticketsUser;
 }
+
+export const totalTicketsEventByUser = async (idEvent: string, idUser: string) => {
+    const totalTickets = await TicketModel.countDocuments({
+        id_evento: new Types.ObjectId(idEvent),
+        id_usuario: new Types.ObjectId(idUser),
+        estado: 'vendido',
+        activo: true
+    });
+    return totalTickets;
+}

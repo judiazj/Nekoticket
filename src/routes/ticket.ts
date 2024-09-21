@@ -5,6 +5,7 @@ import { validarCampos } from '../middlewares/index.js';
 import { asignTickets, createTickets, getTicketsByLocalidad, getTicketsByUser } from '../controllers/ticket.js';
 import { getEventById } from '../services/event.js';
 import { getUserById } from '../services/user.js';
+import { verifyTicketEventByUser } from '../middlewares/validarCampos.js';
 
 const router = Router();
 
@@ -63,6 +64,7 @@ router.put('/obtain/:id', [
             throw new Error('El usuario no existe');
         }
     }),
+    verifyTicketEventByUser,
     check('localidad', 'La localidad es obligatoria').not().isEmpty(),
     // TODO: Implementar middleware verificar localidades
     check('cantidad', 'La cantidad es obligatoria').isNumeric({ no_symbols: true }),
